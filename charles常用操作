@@ -1,0 +1,8 @@
+charles安装证书抓取https请求-windows端
+help-SSL Proxying-Install Charles Root Certificate
+安装证书-本地计算机-下一步-将所有证书存放下列存储-浏览-受信任的根证书颁发机构-确定
+	charles弱网测试
+ proxy-Throttle Settings
+Charles断点测试
+右击要打断点的接口-Breakpoints-浏览器刷新对应接口页面-自动跳动到charles-点击edit request修改请求信息-点击Edit Response-选择合适显示格式，比如json-修改对应数据-Execute-回到浏览器查看修改后的response响应信息-响应数据也可更改同样步骤
+
