@@ -92,3 +92,26 @@ git revert commitID. 其实，git revert可以用来撤销任意一次的修改�
 git reset --hard commitID/git reset --hard HEAD^（HEAD表示当前版本，几个^表示倒数第几个版本，倒数第100个版本可以用HEAD~100）；参数--hard：强制将暂存区和工作区都同步到指定的版本
 git reset和git revert的区别是：reset是用来回滚的，将HEAD的指针指向了想要回滚的版本，作为最新的版本，而后面的版本也都没有了；而revert只是用来撤销某一次更改，对之后的更改并没有影响
 然后再用git push -f提交到远程仓库
+
+第一次连接远程仓库要做的
+1 git config --global user.name '用户名'
+2 git config --global user.email '邮箱'
+拉取远程仓库至本地，本地修改并提交至远程仓库
+1 git clone 仓库地址
+2 git add 修改的文件  //放入暂存区
+3 git commit -m '修改版本备注' //暂存区持久化
+4 git push //如果是第一次提交要配置SSL密钥
+
+远程创建分支，将远程拉到本地分支，在这个分支修改a.txt文件并推到远程仓库
+1.远程创建分支github,代码托管平台new branch即可
+2.git pull //将远程分支与本地分支合并，包括代码
+3.git checkout 要切换的分支名//切换分支
+4.vi a.txt//打开并修改的文件
+5.git add a.txt//放入暂存区
+6.git commit -m '修改版本备注' //暂存区持久化
+7.git push//推到远程仓库
+
+远程更新本地仓库
+1.git pull//要在主分支master/main下，因为开发过程中，有多个开发人员，最新代码在主分支下，所以拉到主分支，另一个本地是快照，更新避免冲突
+2.git checkout br//切到分支
+3.git merge main//将分支main合并到当前分支上,良好习惯，在分支下修改代码
