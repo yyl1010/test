@@ -72,3 +72,23 @@
     git stash drop：删除栈顶存储的修改
     git stash pop：将栈顶存储的修改恢复到当前分支，同时删除栈顶元素
     git stash list：查看栈中所有元素
+
+git commit -m "message"
+commit之后又改了一个小bug，但是又不想增加一个commit，可以用：git commit --amend --no-edit，直接将改动添加到上一次的commit中
+
+推送到远程仓库的dev分支：git push origin dev
+
+将test分支的更改合并到master分支：先在test分支上commit、push，再：git checkout master; git merge test
+
+Git 撤销与回滚
+暂存区：git add之后commit之前存在的区域；工作区：git commit之后存在的区域；远程仓库：git push之后；
+作了修改，但还没git add，撤销到上一次提交：git checkout -f -- filename；git checkout -f -- .
+作了修改，并且已经git add，但还没git commit：
+先将暂存区的修改撤销：git reset HEAD filename/git reset HEAD；此时修改只存在于工作区，变为了 "unstaged changes"；
+再利用上面的checkout命令从工作区撤销修改
+git add之后，作了修改，想丢弃这次修改：git checkout -f --filename会回到最近一次git add
+作了修改，并且已经git commit了，想撤销这次的修改：
+git revert commitID. 其实，git revert可以用来撤销任意一次的修改，不一定要是最近一次
+git reset --hard commitID/git reset --hard HEAD^（HEAD表示当前版本，几个^表示倒数第几个版本，倒数第100个版本可以用HEAD~100）；参数--hard：强制将暂存区和工作区都同步到指定的版本
+git reset和git revert的区别是：reset是用来回滚的，将HEAD的指针指向了想要回滚的版本，作为最新的版本，而后面的版本也都没有了；而revert只是用来撤销某一次更改，对之后的更改并没有影响
+然后再用git push -f提交到远程仓库
