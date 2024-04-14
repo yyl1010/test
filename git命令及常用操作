@@ -1,0 +1,117 @@
+##1.1. git基本概念
+  工作区：仓库的目录。工作区是独立于各个分支的。
+  暂存区：数据暂时存放的区域，类似于工作区写入版本库前的缓存区。暂存区是独立于各个分支的。
+  版本库：存放所有已经提交到本地仓库的代码版本
+  版本结构：树结构，树中每个节点代表一个代码版本。
+
+1.2git命令分类整理
+
+    1.2.1 全局设置
+    git config --global user.name xxx：设置全局用户名，信息记录在~/.gitconfig文件中
+    git config --global user.email xxx@xxx.com：设置全局邮箱地址，信息记录在~/.gitconfig文件中
+    git init：将当前目录配置成git仓库，信息记录在隐藏的.git文件夹中
+
+    1.2.2 常用命令
+    git add XX ：将XX文件添加到暂存区
+    git commit -m "给自己看的备注信息"：将暂存区的内容提交到当前分支
+    git status：查看仓库状态
+    git log：查看当前分支的所有版本
+    git push -u (第一次需要-u以后不需要) ：将当前分支推送到远程仓库
+    git clone git@git.acwing.com:xxx/XXX.git：将远程仓库XXX下载到当前目录下
+    git branch：查看所有分支和当前所处分支
+
+    1.2.3 查看命令
+    git diff XX：查看XX文件相对于暂存区修改了哪些内容
+    git status：查看仓库状态
+    git log：查看当前分支的所有版本
+    git log --pretty=oneline：用一行来显示
+    git reflog：查看HEAD指针的移动历史（包括被回滚的版本）
+    git branch：查看所有分支和当前所处分支
+    git pull ：将远程仓库的当前分支与本地仓库的当前分支合并
+
+    1.2.4 删除命令
+    git rm --cached XX：将文件从仓库索引目录中删掉，不希望管理这个文件
+    git restore --staged xx：==将xx从暂存区里移除==
+    git checkout — XX或git restore XX：==将XX文件尚未加入暂存区的修改全部撤销
+
+    1.2.5 代码回滚
+    git reset --hard HEAD^ 或git reset --hard HEAD~ ：将代码库回滚到上一个版本
+    git reset --hard HEAD^^：往上回滚两次，以此类推
+    git reset --hard HEAD~100：往上回滚100个版本
+    git reset --hard 版本号：回滚到某一特定版本
+
+    1.2.6 远程仓库
+    git remote add origin git@git.acwing.com:xxx/XXX.git：将本地仓库关联到远程仓库
+    git push -u (第一次需要-u以后不需要) ：将当前分支推送到远程仓库
+    git push origin branch_name：将本地的某个分支推送到远程仓库
+    git clone git@git.acwing.com:xxx/XXX.git：将远程仓库XXX下载到当前目录下
+    git push --set-upstream origin branch_name：设置本地的branch_name分支对应远程仓库的branch_name分支
+    git push -d origin branch_name：删除远程仓库的branch_name分支
+    git checkout -t origin/branch_name 将远程的branch_name分支拉取到本地
+    git pull ：将远程仓库的当前分支与本地仓库的当前分支合并
+    git pull origin branch_name：将远程仓库的branch_name分支与本地仓库的当前分支合并
+    git branch --set-upstream-to=origin/branch_name1 branch_name2：将远程的branch_name1分支与本地的branch_name2分支对应
+
+    1.2.7 分支命令
+    git branch branch_name：创建新分支
+    git branch：查看所有分支和当前所处分支
+    git checkout -b branch_name：创建并切换到branch_name这个分支
+    git checkout branch_name：切换到branch_name这个分支
+    git merge branch_name：将分支branch_name合并到当前分支上
+    git branch -d branch_name：删除本地仓库的branch_name分支
+    git push --set-upstream origin branch_name：设置本地的branch_name分支对应远程仓库的branch_name分支
+    git push -d origin branch_name：删除远程仓库的branch_name分支
+    git checkout -t origin/branch_name 将远程的branch_name分支拉取到本地
+    git pull ：将远程仓库的当前分支与本地仓库的当前分支合并
+    git pull origin branch_name：将远程仓库的branch_name分支与本地仓库的当前分支合并
+    git branch --set-upstream-to=origin/branch_name1 branch_name2：将远程的branch_name1分支与本地的branch_name2分支对应
+
+    1.2.8 stash暂存
+    git stash：将工作区和暂存区中尚未提交的修改存入栈中
+    git stash apply：将栈顶存储的修改恢复到当前分支，但不删除栈顶元素
+    git stash drop：删除栈顶存储的修改
+    git stash pop：将栈顶存储的修改恢复到当前分支，同时删除栈顶元素
+    git stash list：查看栈中所有元素
+
+git commit -m "message"
+commit之后又改了一个小bug，但是又不想增加一个commit，可以用：git commit --amend --no-edit，直接将改动添加到上一次的commit中
+
+推送到远程仓库的dev分支：git push origin dev
+
+将test分支的更改合并到master分支：先在test分支上commit、push，再：git checkout master; git merge test
+
+Git 撤销与回滚
+暂存区：git add之后commit之前存在的区域；工作区：git commit之后存在的区域；远程仓库：git push之后；
+作了修改，但还没git add，撤销到上一次提交：git checkout -f -- filename；git checkout -f -- .
+作了修改，并且已经git add，但还没git commit：
+先将暂存区的修改撤销：git reset HEAD filename/git reset HEAD；此时修改只存在于工作区，变为了 "unstaged changes"；
+再利用上面的checkout命令从工作区撤销修改
+git add之后，作了修改，想丢弃这次修改：git checkout -f --filename会回到最近一次git add
+作了修改，并且已经git commit了，想撤销这次的修改：
+git revert commitID. 其实，git revert可以用来撤销任意一次的修改，不一定要是最近一次
+git reset --hard commitID/git reset --hard HEAD^（HEAD表示当前版本，几个^表示倒数第几个版本，倒数第100个版本可以用HEAD~100）；参数--hard：强制将暂存区和工作区都同步到指定的版本
+git reset和git revert的区别是：reset是用来回滚的，将HEAD的指针指向了想要回滚的版本，作为最新的版本，而后面的版本也都没有了；而revert只是用来撤销某一次更改，对之后的更改并没有影响
+然后再用git push -f提交到远程仓库
+
+第一次连接远程仓库要做的
+1 git config --global user.name '用户名'
+2 git config --global user.email '邮箱'
+拉取远程仓库至本地，本地修改并提交至远程仓库
+1 git clone 仓库地址
+2 git add 修改的文件  //放入暂存区
+3 git commit -m '修改版本备注' //暂存区持久化
+4 git push //如果是第一次提交要配置SSL密钥
+
+远程创建分支，将远程拉到本地分支，在这个分支修改a.txt文件并推到远程仓库
+1.远程创建分支github,代码托管平台new branch即可
+2.git pull //将远程分支与本地分支合并，包括代码
+3.git checkout 要切换的分支名//切换分支
+4.vi a.txt//打开并修改的文件
+5.git add a.txt//放入暂存区
+6.git commit -m '修改版本备注' //暂存区持久化
+7.git push//推到远程仓库
+
+远程更新本地仓库
+1.git pull//要在主分支master/main下，因为开发过程中，有多个开发人员，最新代码在主分支下，所以拉到主分支，另一个本地是快照，更新避免冲突
+2.git checkout br//切到分支
+3.git merge main//将分支main合并到当前分支上,良好习惯，在分支下修改代码
